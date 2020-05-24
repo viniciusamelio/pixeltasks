@@ -39,9 +39,7 @@ class _SignUpViewState extends State<SignUpView> {
           child: Container(
             padding: const EdgeInsets.all(8),
             width: screen.width,
-            constraints: BoxConstraints(
-              minHeight: screen.height * 0.5
-            ),
+            constraints: BoxConstraints(minHeight: screen.height * 0.5),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
@@ -108,7 +106,7 @@ class _SignUpViewState extends State<SignUpView> {
                       },
                       obscureText: true,
                       decoration: InputDecoration(
-                          labelText: "Senha",                          
+                          labelText: "Senha",
                           suffixIcon: IconButton(
                               icon: Icon(Icons.check),
                               onPressed: () {

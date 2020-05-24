@@ -29,8 +29,8 @@ class UserController extends GetController with HiveService {
 
   Future<User> get(String userId) async {
     /* Se o usuário pesquisado pelo ID existir ele é setado e retornado */
-    this.user = await this.userBox.get(userId);
-    return this.user;
+    User _user = User.fromJson(await this.userBox.get(userId)) ?? User();
+    return _user;
   }
 
   Future<void> updateExisting() async {
@@ -41,5 +41,11 @@ class UserController extends GetController with HiveService {
   void changeRequestStatus() {
     this.request = !this.request;
     update(this);
+  }
+
+  Future<bool> verifyPassword() async {
+    final User findUser = await this.get(this.user.id) ?? User();
+    final check = findUser.password == this.user.password;
+    return check;
   }
 }

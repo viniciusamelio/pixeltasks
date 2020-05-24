@@ -6,16 +6,17 @@ class User {
   String password;
   List<Board> boards;
 
-  User({this.id,this.name,this.password,this.boards});
+  User({this.id, this.name, this.password, this.boards});
 
-
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    password = json['password'];
-    if (json['boards'] != null) {
-      for (var board in json['boards']) {
-        Board.fromJson(board);
+  User.fromJson(Map<dynamic, dynamic> json) {
+    if (json != null) {
+      id = json['id'];
+      name = json['name'];
+      password = json['password'];
+      if (json['boards'] != null) {
+        for (var board in json['boards']) {
+          Board.fromJson(board);
+        }
       }
     }
   }
