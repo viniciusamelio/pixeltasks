@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:pixeltasks/login/widgets/login_card.dart';
@@ -86,7 +87,7 @@ class _LoginViewState extends State<LoginView> {
                 MaterialButton(
                   color: purple,
                   padding: EdgeInsets.symmetric(vertical:15,horizontal:120),
-                  onPressed: (){},
+                  onPressed: ()=> Get.toNamed('/signup'),
                   child: Text("Cadastrar",style: GoogleFonts.rubik(
                     color: Colors.white,
                     fontWeight: FontWeight.w600

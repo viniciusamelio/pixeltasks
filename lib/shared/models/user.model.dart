@@ -6,6 +6,9 @@ class User {
   String password;
   List<Board> boards;
 
+  User({this.id,this.name,this.password,this.boards});
+
+
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
