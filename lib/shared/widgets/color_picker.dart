@@ -10,7 +10,7 @@ class ColorPicker extends StatefulWidget {
 
 class _ColorPickerState extends State<ColorPicker> {
   Function onSelect;
-  int selected = 0;
+  int selected;
   @override
   void initState() {
     onSelect = widget.onSelect;

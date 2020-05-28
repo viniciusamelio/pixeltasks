@@ -4,7 +4,7 @@ class User {
   String id;
   String name;
   String password;
-  List<Board> boards;
+  List<Board> boards = <Board>[];
 
   User({this.id, this.name, this.password, this.boards});
 

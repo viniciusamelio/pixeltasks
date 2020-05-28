@@ -16,7 +16,7 @@ class _LoginCardState extends State<LoginCard> {
   @override
   void initState() {
     _key = GlobalKey<FormState>();
-    _userController = UserController();
+    _userController = Get.put(UserController());
     super.initState();
   }
 
@@ -101,6 +101,7 @@ class _LoginCardState extends State<LoginCard> {
     if (_key.currentState.validate()) {
       _key.currentState.save();
       final check = await _userController.verifyPassword();
+      _userController.user = await _userController.get(_userController.user.id);
       print(check);
       if (check) {
         _navigate();

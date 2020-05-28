@@ -38,6 +38,7 @@ class UserController extends GetController with HiveService {
   Future<void> updateExisting() async {
     await this.userBox.delete(this.user.id);
     await this.userBox.put(this.user.id, this.user.toJson());
+    update(this);
   }
 
   void changeRequestStatus() {
