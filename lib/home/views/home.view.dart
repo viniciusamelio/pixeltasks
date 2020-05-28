@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pixeltasks/home/widgets/board_tile.dart';
+import 'package:pixeltasks/shared/controllers/user.controller.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
 
 class HomeView extends StatefulWidget {
@@ -7,12 +10,61 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  UserController _userController;
+
+  @override
+  void initState() {
+    _userController = UserController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: purple,
         title: Text("Boards"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        elevation: 2,
+        child: IconButton(
+          icon: Icon(
+            Icons.add,
+            size: 30,
+            color: Colors.white,
+          ),
+          onPressed: () => Get.toNamed('/board/add'),
+        ),
+        backgroundColor: green,
+        onPressed: () {},
+      ),
+      body: GetBuilder(
+        init: UserController(),
+        builder: (controller) {
+          if (controller.user.boards == null ||
+              controller.user.boards.length < 1) {
+            return Center(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.close, color: Colors.red, size: 70),
+                    const Text("Você ainda não possui nenhum board criado",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 20))
+                  ],
+                ),
+              ),
+            );
+          }
+          return ListView.builder(
+            itemCount: controller.user.boards.length,
+            itemBuilder: (context, index) {
+              return BoardTile(title: controller.user.boards[index].title);
+            },
+          );
+        },
       ),
     );
   }

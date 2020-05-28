@@ -7,6 +7,8 @@ class Board {
   DateTime createdAt;
   List<Task> tasks;
 
+  Board({this.title,this.color,this.createdAt,this.tasks});
+
   Board.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     color = json['color'];

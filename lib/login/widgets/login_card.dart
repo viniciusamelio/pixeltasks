@@ -24,7 +24,7 @@ class _LoginCardState extends State<LoginCard> {
   Widget build(BuildContext context) {
     final screen = MediaQuery.of(context).size;
     return Container(
-        height: 330,
+        height: 300,
         width: screen.width * 0.85,
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
@@ -35,11 +35,13 @@ class _LoginCardState extends State<LoginCard> {
                   color: Colors.black12, offset: Offset(2, 5), blurRadius: 30)
             ]),
         child: SingleChildScrollView(
-                  child: Column(
+          child: Column(
             children: [
               Text("Já possui uma conta?",
                   style: TextStyle(
-                      color: purple, fontWeight: FontWeight.bold, fontSize: 20)),
+                      color: purple,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
               Text("Faça login",
                   style: TextStyle(
                       color: dark, fontWeight: FontWeight.w300, fontSize: 18)),
@@ -73,15 +75,18 @@ class _LoginCardState extends State<LoginCard> {
                       decoration: InputDecoration(labelText: "Senha"),
                     ),
                     const SizedBox(height: 20),
-                    MaterialButton(
-                      color: purple,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 120),
-                      onPressed: () => _loginHandler(),
-                      child: Text(
-                        "Entrar",
-                        style: GoogleFonts.rubik(
-                            color: Colors.white, fontWeight: FontWeight.w600),
+                    SizedBox(
+                      width: screen.width,
+                      child: MaterialButton(
+                        color: purple,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+                        onPressed: () => _loginHandler(),
+                        child: Text(
+                          "Entrar",
+                          style: GoogleFonts.rubik(
+                              color: Colors.white, fontWeight: FontWeight.w600),
+                        ),
                       ),
                     )
                   ],
@@ -97,7 +102,7 @@ class _LoginCardState extends State<LoginCard> {
       _key.currentState.save();
       final check = await _userController.verifyPassword();
       print(check);
-      if (check){
+      if (check) {
         _navigate();
       } else {
         _onLoginError();
@@ -112,6 +117,7 @@ class _LoginCardState extends State<LoginCard> {
   void _onLoginError() {
     Flushbar(
       icon: Icon(Icons.person),
+      duration: Duration(seconds: 5),
       backgroundColor: Colors.red,
       message: "Não conseguimos te logar com os dados fornecidos",
     ).show(context);

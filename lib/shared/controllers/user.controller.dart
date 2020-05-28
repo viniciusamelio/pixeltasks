@@ -13,6 +13,8 @@ class UserController extends GetController with HiveService {
     openUserBox();
   }
 
+  static UserController get to => Get.find();
+
   Future<void> openUserBox() async {
     this.userBox = await super.openBox('user');
   }
