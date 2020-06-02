@@ -166,7 +166,8 @@ class _SignUpViewState extends State<SignUpView> {
     }
   }
 
-  void _signUpCallBack() {
+  void _signUpCallBack() async {
+    _userController.user = await _userController.get(_userController.user.id);
     Get.offNamedUntil('/home', (Route<dynamic> route) => false);
   }
 

@@ -15,7 +15,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
-    _userController = UserController();
+    _userController = UserController.to;
     super.initState();
   }
 
@@ -39,8 +39,7 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: green,
         onPressed: () {},
       ),
-      body: GetBuilder(
-        init: UserController(),
+      body: GetBuilder<UserController>(
         builder: (controller) {
           if (controller.user.boards == null ||
               controller.user.boards.length < 1) {
@@ -61,14 +60,14 @@ class _HomeViewState extends State<HomeView> {
           }
           return ListView.builder(
             itemCount: controller.user.boards.length,
-            itemBuilder: (context, index) {
+            itemBuilder: (context, index) {              
               return BoardTile(
-                  board: controller.user.boards[index],
+                  board: _userController.user.boards[index],
                   button: IconButton(
                     icon: Icon(Icons.menu, color: Colors.white),
                     iconSize: 30,
                     onPressed: () {
-                      Get.dialog(BoardDialog(board: controller.user.boards[index],));
+                      Get.dialog(BoardDialog(board: controller.user.boards[index]));
                     },
                   ));
             },

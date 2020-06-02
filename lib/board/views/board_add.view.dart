@@ -23,8 +23,8 @@ class _BoardAddViewState extends State<BoardAddView> {
     super.initState();
   }
 
-  void _boardHandler(){
-    if(_userController.user.boards == null){
+  void _boardHandler() {
+    if (_userController.user.boards == null) {
       _userController.user.boards = [];
     }
   }
@@ -103,7 +103,8 @@ class _BoardAddViewState extends State<BoardAddView> {
         _board.createdAt = DateTime.now();
         _userController.user.boards.add(_board);
         await _userController.updateExisting();
-        Get.offNamedUntil('/home', (Route<dynamic> route) => false);
+        await _userController.save().whenComplete(
+            () => Get.offNamedUntil('/home', (Route<dynamic> route) => false));
       }
     }
   }

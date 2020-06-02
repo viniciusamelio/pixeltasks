@@ -15,7 +15,7 @@ class User {
       password = json['password'];
       if (json['boards'] != null) {
         for (var board in json['boards']) {
-          Board.fromJson(board);
+          boards.add(Board.fromJson(board));
         }
       }
     }

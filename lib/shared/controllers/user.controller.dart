@@ -30,14 +30,13 @@ class UserController extends GetController with HiveService {
   }
 
   Future<User> get(String userId) async {
-    /* Se o usuário pesquisado pelo ID existir ele é setado e retornado */
     User _user = User.fromJson(await this.userBox.get(userId)) ?? User();
     return _user;
   }
 
   Future<void> updateExisting() async {
     await this.userBox.delete(this.user.id);
-    await this.userBox.put(this.user.id, this.user.toJson());
+    await this.userBox.put(this.user.id, user.toJson());    
     update(this);
   }
 
