@@ -3,13 +3,13 @@ import 'package:pixeltasks/shared/models/task.model.dart';
 
 class Board {
   String title;
-  Color color;
+  String color;
   DateTime createdAt;
   List<Task> tasks;
 
   Board({this.title,this.color,this.createdAt,this.tasks});
 
-  Board.fromJson(Map<String, dynamic> json) {
+  Board.fromJson(Map<dynamic, dynamic> json) {
     title = json['title'];
     color = json['color'];
     createdAt = json['createdAt'];
@@ -20,7 +20,7 @@ class Board {
     }
   }
 
-  Map<String, dynamic> toJson() {
+  Map<dynamic, dynamic> toJson() {
     final Map<String, dynamic> json = <String,dynamic>{};
     json['title'] = title;
     json['color'] = color;

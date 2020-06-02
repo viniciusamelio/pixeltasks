@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pixeltasks/home/widgets/board_dialog.dart';
 import 'package:pixeltasks/home/widgets/board_tile.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
@@ -61,7 +62,15 @@ class _HomeViewState extends State<HomeView> {
           return ListView.builder(
             itemCount: controller.user.boards.length,
             itemBuilder: (context, index) {
-              return BoardTile(title: controller.user.boards[index].title);
+              return BoardTile(
+                  board: controller.user.boards[index],
+                  button: IconButton(
+                    icon: Icon(Icons.menu, color: Colors.white),
+                    iconSize: 30,
+                    onPressed: () {
+                      Get.dialog(BoardDialog(board: controller.user.boards[index],));
+                    },
+                  ));
             },
           );
         },

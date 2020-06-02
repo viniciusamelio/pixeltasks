@@ -63,7 +63,7 @@ class _BoardAddViewState extends State<BoardAddView> {
                   Text("Cor", style: TextStyle(fontSize: 20, color: dark)),
                   const SizedBox(height: 10),
                   ColorPicker(onSelect: (Color color) {
-                    _board.color = color;
+                    _board.color = color.toString();
                   }),
                   const SizedBox(height: 20),
                   SizedBox(
@@ -100,7 +100,8 @@ class _BoardAddViewState extends State<BoardAddView> {
             onConfirm: () => Navigator.of(context).pop());
       } else {
         _key.currentState.save();
-        await _userController.user.boards.add(_board);
+        _board.createdAt = DateTime.now();
+        _userController.user.boards.add(_board);
         await _userController.updateExisting();
         Get.offNamedUntil('/home', (Route<dynamic> route) => false);
       }

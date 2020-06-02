@@ -101,7 +101,7 @@ class _LoginCardState extends State<LoginCard> {
     if (_key.currentState.validate()) {
       _key.currentState.save();
       final check = await _userController.verifyPassword();
-      _userController.user = await _userController.get(_userController.user.id);
+      _userController.user = await _userController.get(_userController.user.id.toString());
       print(check);
       if (check) {
         _navigate();

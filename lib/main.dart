@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pixeltasks/board/views/board.view.dart';
+import 'package:pixeltasks/board/views/board_add.view.dart';
 import 'package:pixeltasks/home/views/home.view.dart';
 import 'package:pixeltasks/login/views/login.view.dart';
 import 'package:pixeltasks/login/views/signup.view.dart';
