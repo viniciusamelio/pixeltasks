@@ -62,6 +62,7 @@ class _HomeViewState extends State<HomeView> {
             itemCount: controller.user.boards.length,
             itemBuilder: (context, index) {              
               return BoardTile(
+                  onTap: ()=> Get.toNamed('/board',arguments:index),
                   board: _userController.user.boards[index],
                   button: IconButton(
                     icon: Icon(Icons.menu, color: Colors.white),
