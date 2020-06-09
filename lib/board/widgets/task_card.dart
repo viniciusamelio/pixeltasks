@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pixeltasks/board/widgets/task_add_alert.dart';
+import 'package:pixeltasks/board/widgets/task_tile.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
 
@@ -58,7 +59,11 @@ class _TaskCardState extends State<TaskCard> {
                       _userController.user.boards[widget.index].tasks.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return Container();
+                    return TaskTile(
+                      task: _userController
+                          .user.boards[widget.index].tasks[index],
+                      boardIndex: widget.index,
+                    );
                   });
             },
           ),
@@ -69,8 +74,7 @@ class _TaskCardState extends State<TaskCard> {
               color: green,
               elevation: 0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6)
-              ),
+                  borderRadius: BorderRadius.circular(6)),
               child: Text("Adicionar",
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w600)),
@@ -83,6 +87,6 @@ class _TaskCardState extends State<TaskCard> {
   }
 
   void _showNewTaskDialog() {
-    Get.dialog(TaskAddAlert(index: widget.index));
+    Get.dialog(TaskAddAlert(index: widget.index, status: widget.title));
   }
 }

@@ -21,6 +21,7 @@ class UserController extends GetController with HiveService {
 
   Future<void> save() async {
     await this.userBox.put(this.user.id, this.user.toJson());
+    update(this);
   }
 
   Future<bool> check() async {

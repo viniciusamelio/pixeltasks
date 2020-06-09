@@ -5,7 +5,9 @@ class Task {
   String description;
   DateTime expiresIn;
   String status;
-  List<Note> notes;
+  List<Note> notes = <Note>[];
+
+  Task({this.title,this.description,this.expiresIn,this.notes,this.status});
 
   Task.fromJson(Map<String, dynamic> json) {
     title = json['title'];

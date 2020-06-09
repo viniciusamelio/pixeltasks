@@ -18,7 +18,7 @@ class _SignUpViewState extends State<SignUpView> {
   @override
   void initState() {
     _key = GlobalKey<FormState>();
-    _userController = UserController();
+    _userController = UserController.to;
     _initFocus();
     super.initState();
   }

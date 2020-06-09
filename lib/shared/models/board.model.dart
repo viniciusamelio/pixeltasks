@@ -5,7 +5,7 @@ class Board {
   String title;
   String color;
   DateTime createdAt;
-  List<Task> tasks;
+  List<Task> tasks = <Task>[];
 
   Board({this.title,this.color,this.createdAt,this.tasks});
 
