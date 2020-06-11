@@ -37,7 +37,7 @@ class TaskOptionsDialog extends StatelessWidget {
               ),
               const SizedBox(width: 15),
               GestureDetector(
-                onTap: () => Get.toNamed('/task', arguments: task),
+                onTap: () => Get.toNamed('/task', arguments: {"task": task, "index" : index}),
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration:
