@@ -1,4 +1,6 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
 import 'package:pixeltasks/shared/models/task.model.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
@@ -22,6 +24,7 @@ class TaskOptionsDialog extends StatelessWidget {
                 onTap: () async {
                   _userController.user.boards[index].tasks.removeWhere((element) => element == task);
                   await _userController.updateExisting().then((_) => Navigator.pop(context));
+                  _deleteFlushbar(context);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(12),
@@ -34,7 +37,7 @@ class TaskOptionsDialog extends StatelessWidget {
               ),
               const SizedBox(width: 15),
               GestureDetector(
-                onTap: () {},
+                onTap: () => Get.toNamed('/task', arguments: task),
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration:
@@ -50,5 +53,14 @@ class TaskOptionsDialog extends StatelessWidget {
       ),
     );
  
+  }
+
+  void _deleteFlushbar(BuildContext context){
+    Flushbar(
+      backgroundColor: dark,
+      title: "Removida",
+      duration: Duration(seconds: 3),
+      message: "Task excluída com sucesso!",
+    )..show(context);
   }
 }

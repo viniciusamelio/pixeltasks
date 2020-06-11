@@ -7,6 +7,7 @@ import 'package:pixeltasks/home/views/home.view.dart';
 import 'package:pixeltasks/login/views/login.view.dart';
 import 'package:pixeltasks/login/views/signup.view.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
+import 'package:pixeltasks/task/widgets/task.view.dart';
 
 void main() async {
   runApp(MyApp());
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
         "/signup": (context) => SignUpView(),
         '/home': (context) => HomeView(),
         '/board' : (context) => BoardView(),
-        "/board/add": (context) => BoardAddView()
+        "/board/add": (context) => BoardAddView(),
+        "/task" : (context) => TaskView()
       },
     );
   }

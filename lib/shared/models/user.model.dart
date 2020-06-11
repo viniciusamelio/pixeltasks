@@ -21,13 +21,13 @@ class User {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = <String, dynamic>{};
+  Map toJson() {
+    final Map<dynamic, dynamic> json = <dynamic, dynamic>{};
     json['id'] = id;
     json['name'] = name;
     json['password'] = password;
     if (boards != null) {
-      List<Map<String, dynamic>> boardsJson = <Map<String, dynamic>>[];
+      List<Map<dynamic, dynamic>> boardsJson = <Map<dynamic, dynamic>>[];
       for (var board in boards) {
         boardsJson.add(board.toJson());
       }

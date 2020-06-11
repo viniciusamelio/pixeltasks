@@ -9,7 +9,7 @@ class Task {
 
   Task({this.title,this.description,this.expiresIn,this.notes,this.status});
 
-  Task.fromJson(Map<String, dynamic> json) {
+  Task.fromJson(Map json) {
     title = json['title'];
     description = json['description'];
     expiresIn = json['expiresIn'];
@@ -21,14 +21,14 @@ class Task {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = <String,dynamic>{};
+  Map<dynamic, dynamic> toJson() {
+    final Map json = {};
     json['title'] = title;
     json['description'] = description;
     json['expiresIn'] = expiresIn;
     json['status'] = status;
     if (notes != null) {
-      final List<Map<String, dynamic>> jsonNotes = <Map<String,dynamic>>[];
+      final List<Map<dynamic, dynamic>> jsonNotes = <Map<dynamic,dynamic>>[];
       for (var note in notes) {
         jsonNotes.add(note.toJson());
       }

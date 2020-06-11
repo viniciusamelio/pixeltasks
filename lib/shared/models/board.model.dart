@@ -21,12 +21,12 @@ class Board {
   }
 
   Map<dynamic, dynamic> toJson() {
-    final Map<String, dynamic> json = <String,dynamic>{};
+    final Map<dynamic, dynamic> json = <dynamic,dynamic>{};
     json['title'] = title;
     json['color'] = color;
     json['createdAt'] = createdAt;
     if (tasks != null) {
-      final List<Map<String, dynamic>> jsonTasks = <Map<String, dynamic>>[];
+      final List<Map<dynamic, dynamic>> jsonTasks = <Map<dynamic, dynamic>>[];
       for (var task in tasks) {
         jsonTasks.add(task.toJson());
       }

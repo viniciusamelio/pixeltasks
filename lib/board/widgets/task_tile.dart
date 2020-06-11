@@ -14,29 +14,32 @@ class TaskTile extends StatefulWidget {
 class _TaskTileState extends State<TaskTile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(6),
-      width: MediaQuery.of(context).size.width * 0.7,
-      padding: const EdgeInsets.all(18),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(widget.task.title,
-              style: TextStyle(fontWeight: FontWeight.w600)),
-          GestureDetector(onTap: _showDialog,child: Icon(Icons.menu))
-        ],
+    return GestureDetector(
+      onTap: () => Get.toNamed('/task', arguments: widget.task),
+      child: Container(
+        margin: const EdgeInsets.all(6),
+        width: MediaQuery.of(context).size.width * 0.7,
+        padding: const EdgeInsets.all(18),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(widget.task.title,
+                style: TextStyle(fontWeight: FontWeight.w600)),
+            GestureDetector(onTap: _showDialog, child: Icon(Icons.menu))
+          ],
+        ),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black38, blurRadius: 7, offset: Offset(0, 0))
+            ]),
       ),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black38, blurRadius: 7, offset: Offset(0, 0))
-          ]),
     );
   }
 
-  void _showDialog(){
-    Get.dialog(TaskOptionsDialog(task: widget.task,index: widget.boardIndex));
+  void _showDialog() {
+    Get.dialog(TaskOptionsDialog(task: widget.task, index: widget.boardIndex));
   }
 }
