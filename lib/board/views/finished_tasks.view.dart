@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pixeltasks/board/widgets/task_card.dart';
 
-class TodoTasksPage extends StatefulWidget {
+class FinishedTasksView extends StatefulWidget {
   final int index;
 
-  const TodoTasksPage({Key key, this.index}) : super(key: key);
+  const FinishedTasksView({Key key, this.index}) : super(key: key);
   @override
-  _TodoTasksPageState createState() => _TodoTasksPageState();
+  _FinishedTasksViewState createState() => _FinishedTasksViewState();
 }
 
-class _TodoTasksPageState extends State<TodoTasksPage> {
+class _FinishedTasksViewState extends State<FinishedTasksView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +19,7 @@ class _TodoTasksPageState extends State<TodoTasksPage> {
           child: Container(
             padding: const EdgeInsets.all(8),
             child: SingleChildScrollView(
-                child: TaskCard(title: "TODO", index: widget.index)),
+                child: TaskCard(title: "FINISHED", index: widget.index)),
           )),
     );
   }

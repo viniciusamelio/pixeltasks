@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pixeltasks/board/widgets/task_add_alert.dart';
 import 'package:pixeltasks/board/widgets/task_tile.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
+import 'package:pixeltasks/shared/models/task.model.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
 
 class TaskCard extends StatefulWidget {
@@ -15,7 +16,6 @@ class TaskCard extends StatefulWidget {
 
 class _TaskCardState extends State<TaskCard> {
   UserController _userController;
-
   @override
   void initState() {
     _userController = UserController.to;
@@ -60,15 +60,12 @@ class _TaskCardState extends State<TaskCard> {
                       .length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    if (_userController
-                            .user.boards[widget.index].tasks[index].status ==
-                        widget.title)
-                      return TaskTile(
-                        task: _userController
-                            .user.boards[widget.index].tasks[index],
-                        boardIndex: widget.index,
-                      );
-                    return Container();
+                    return TaskTile(
+                      task: _userController.user.boards[widget.index].tasks
+                          .where((element) => element.status == widget.title)
+                          .toList()[index],
+                      boardIndex: widget.index,
+                    );
                   });
             },
           ),

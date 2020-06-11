@@ -7,8 +7,7 @@ import 'package:pixeltasks/home/views/home.view.dart';
 import 'package:pixeltasks/login/views/login.view.dart';
 import 'package:pixeltasks/login/views/signup.view.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
-import 'package:pixeltasks/task/widgets/task.view.dart';
-
+import 'package:pixeltasks/task/views/task.view.dart';
 void main() async {
   runApp(MyApp());
 }

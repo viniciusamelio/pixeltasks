@@ -3,6 +3,8 @@ class Note{
   DateTime createdAt;
 
 
+  Note({this.title,this.createdAt});
+
   Note.fromJson(Map json){
     title = json['title'];
     createdAt = json['createdAt'];

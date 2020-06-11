@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pixeltasks/board/widgets/todo_tasks.view.dart';
+import 'package:pixeltasks/board/views/finished_tasks.view.dart';
+import 'package:pixeltasks/board/views/progress_tasks.view.dart';
+import 'package:pixeltasks/board/views/todo_tasks.view.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
 import 'package:pixeltasks/shared/models/board.model.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
@@ -38,7 +40,7 @@ class _BoardViewState extends State<BoardView> {
       ),
       body: PageView(
         scrollDirection: Axis.horizontal,
-        children: [TodoTasksPage(index: _index), TodoTasksPage(index: _index)],
+        children: [TodoTasksView(index: _index), ProgressTasksView(index: _index),FinishedTasksView(index: _index)],
       ),
     );
   }

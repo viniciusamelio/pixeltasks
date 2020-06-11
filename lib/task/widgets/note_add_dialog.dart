@@ -1,23 +1,32 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
+import 'package:pixeltasks/shared/models/note.model.dart';
 import 'package:pixeltasks/shared/models/task.model.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
 import 'package:pixeltasks/shared/utils/validators.dart';
 
-class TaskAddAlert extends StatefulWidget {
-  final int index;
-  final String status;
-  const TaskAddAlert({Key key, this.index, this.status}) : super(key: key);
+class NoteAddDialog extends StatefulWidget {
+  final Task task;
+  final int boardIndex;
+
+  const NoteAddDialog(
+      {Key key,
+      @required this.task,
+      @HttpStatus.UPGRADE_REQUIRED this.boardIndex})
+      : super(key: key);
   @override
-  _TaskAddAlertState createState() => _TaskAddAlertState();
+  _NoteAddDialogState createState() => _NoteAddDialogState();
 }
 
-class _TaskAddAlertState extends State<TaskAddAlert> {
-  GlobalKey<FormState> _key = GlobalKey<FormState>();
+class _NoteAddDialogState extends State<NoteAddDialog> {
+  GlobalKey<FormState> _key;
+  Note _note = Note();
   UserController _userController;
-  Task _task = Task();
   @override
   void initState() {
+    _key = GlobalKey<FormState>();
     _userController = UserController.to;
     super.initState();
   }
@@ -29,7 +38,7 @@ class _TaskAddAlertState extends State<TaskAddAlert> {
       title: Align(
           alignment: Alignment.center,
           child: Text(
-            "Nova Tarefa",
+            "Nova Nota",
             style: TextStyle(fontSize: 20),
           )),
       content: Form(
@@ -38,15 +47,9 @@ class _TaskAddAlertState extends State<TaskAddAlert> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
-              onSaved: (e) => _task.title = e,
-              validator: (e) => emptyValidator(e, "Insira um título"),
-              decoration: InputDecoration(labelText: "Título"),
-            ),
-            const SizedBox(height: 5),
-            TextFormField(
-              onSaved: (e) => _task.description = e,
-              validator: (e) => emptyValidator(e, "Insira uma descrição"),
-              decoration: InputDecoration(labelText: "Descrição"),
+              onSaved: (e) => _note.title = e,
+              validator: (e) => emptyValidator(e, "Insira a nota"),
+              decoration: InputDecoration(labelText: "Nota"),
             ),
             const SizedBox(height: 20),
             SizedBox(
@@ -60,7 +63,7 @@ class _TaskAddAlertState extends State<TaskAddAlert> {
                 child: Text("Confirmar",
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.w600)),
-                onPressed: _addTask,
+                onPressed: _addNote,
               ),
             )
           ],
@@ -69,18 +72,25 @@ class _TaskAddAlertState extends State<TaskAddAlert> {
     );
   }
 
-  void _addTask() async {
+  void _addNote() async {
     if (_key.currentState.validate()) {
       _key.currentState.save();
-      _task.status = widget.status;
-      if (_userController.user.boards[widget.index].tasks == null)
-        _userController.user.boards[widget.index].tasks = <Task>[];
-      _userController.user.boards[widget.index].tasks.add(_task);
-      await _userController.save().whenComplete(() => _callback());
+      _note.createdAt = DateTime.now();
+      if (_userController.user.boards[widget.boardIndex].tasks
+              .singleWhere((element) => element == widget.task)
+              .notes ==
+          null) {
+        _userController.user.boards[widget.boardIndex].tasks
+            .singleWhere((element) => element == widget.task)
+            .notes = [];
+      }
+      _userController.user.boards[widget.boardIndex].tasks
+          .singleWhere((element) => element == widget.task)
+          .notes
+          .add(_note);
+      await _userController
+          .save()
+          .whenComplete(() => Navigator.of(context).pop());
     }
-  }
-
-  void _callback() {
-    Navigator.pop(context);
   }
 }
