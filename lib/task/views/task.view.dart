@@ -45,187 +45,190 @@ class _TaskViewState extends State<TaskView> {
     }
     super.didChangeDependencies();
   }
-
+  // TODO: Adicionar exclusão de task pela appbar
   @override
   Widget build(BuildContext context) {
     final screen = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: dark,
-        elevation: 3,
-        title: GetBuilder(
+    return GetBuilder(
           init: _userController,
-          builder: (_) => Text(_task.title),
+          builder: (_)=> Scaffold(
+        appBar: AppBar(
+          backgroundColor: dark,
+          elevation: 3,
+          title: GetBuilder(
+            init: _userController,
+            builder: (_) => Text(_task.title),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 15.0),
+              child: InkWell(
+                onTap: () {},
+                child: Icon(Icons.delete, color: Colors.white, size: 30),
+              ),
+            )
+          ],
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15.0),
-            child: InkWell(
-              onTap: () {},
-              child: Icon(Icons.delete, color: Colors.white, size: 30),
-            ),
-          )
-        ],
-      ),
-      backgroundColor: _taskController.setColor(_task.status),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                  _userController.user.boards[_boardIndex].title +
-                      ' -> ' +
-                      _task.title,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17)),
-              const SizedBox(height: 20),
-              Container(
-                width: screen.width * 0.9,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white),
-                child: Form(
-                  key: _key,
+        backgroundColor: _taskController.setColor(_task.status),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                    _userController.user.boards[_boardIndex].title +
+                        ' -> ' +
+                        _task.title,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17)),
+                const SizedBox(height: 20),
+                Container(
+                  width: screen.width * 0.9,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white),
+                  child: Form(
+                    key: _key,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          onSaved: (e) => _userController
+                              .user.boards[_boardIndex].tasks
+                              .singleWhere((element) => element == _task)
+                              .title = e,
+                          controller: _titleController,
+                          validator: (e) => emptyValidator(e, "Digite um título"),
+                          decoration: InputDecoration(labelText: "Título"),
+                        ),
+                        const SizedBox(height: 15),
+                        TextFormField(
+                          onSaved: (e) => _userController
+                              .user.boards[_boardIndex].tasks
+                              .singleWhere((element) => element == _task)
+                              .description = e,
+                          controller: _descriptionController,
+                          validator: (e) =>
+                              emptyValidator(e, "Digite uma desccrição"),
+                          decoration: InputDecoration(labelText: "Descrição"),
+                        ),
+                        const SizedBox(height: 15),
+                        GetBuilder(
+                          init: _userController,
+                          builder: (_) => SmartSelect<String>.single(
+                              value: _taskController.selectedOption,
+                              placeholder:
+                                  _taskController.selectedOption ?? "Selecione",
+                              title: 'Status',
+                              options: _taskController.options,
+                              onChange: (e) {
+                                _taskController.selectedOption = e;
+                                _userController.updateExisting();
+                              }),
+                        ),
+                        const SizedBox(height: 15),
+                        SizedBox(
+                          width: screen.width,
+                          child: MaterialButton(
+                            color: purple,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 14, horizontal: 120),
+                            onPressed: _validateForm,
+                            child: Text(
+                              "Alterar",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  width: screen.width * 0.9,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Colors.white),
                   child: Column(
                     children: [
-                      TextFormField(
-                        onSaved: (e) => _userController
-                            .user.boards[_boardIndex].tasks
-                            .singleWhere((element) => element == _task)
-                            .title = e,
-                        controller: _titleController,
-                        validator: (e) => emptyValidator(e, "Digite um título"),
-                        decoration: InputDecoration(labelText: "Título"),
-                      ),
-                      const SizedBox(height: 15),
-                      TextFormField(
-                        onSaved: (e) => _userController
-                            .user.boards[_boardIndex].tasks
-                            .singleWhere((element) => element == _task)
-                            .description = e,
-                        controller: _descriptionController,
-                        validator: (e) =>
-                            emptyValidator(e, "Digite uma desccrição"),
-                        decoration: InputDecoration(labelText: "Descrição"),
-                      ),
-                      const SizedBox(height: 15),
-                      GetBuilder(
-                        init: _userController,
-                        builder: (_) => SmartSelect<String>.single(
-                            value: _taskController.selectedOption,
-                            placeholder:
-                                _taskController.selectedOption ?? "Selecione",
-                            title: 'Status',
-                            options: _taskController.options,
-                            onChange: (e) {
-                              _taskController.selectedOption = e;
-                              _userController.updateExisting();
-                            }),
-                      ),
-                      const SizedBox(height: 15),
-                      SizedBox(
+                      Container(
                         width: screen.width,
-                        child: MaterialButton(
-                          color: purple,
-                          padding: EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 120),
-                          onPressed: _validateForm,
-                          child: Text(
-                            "Alterar",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600),
+                        height: 40,
+                        child: Center(
+                          child: Text("Notas",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17)),
+                        ),
+                        decoration: BoxDecoration(
+                            color: dark,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                height: _setNoteContainerHeight(),
+                                child: GetBuilder(
+                                  init: _userController,
+                                  builder: (_) => Scrollbar(
+                                    child: ListView.builder(
+                                      itemCount: _userController
+                                              .user.boards[_boardIndex].tasks
+                                              .singleWhere(
+                                                  (element) => element == _task)
+                                              .notes
+                                              ?.length ??
+                                          0,
+                                      itemBuilder: (context, index) {
+                                        return NoteTile(
+                                          task: _task,
+                                          note: _userController
+                                              .user.boards[_boardIndex].tasks
+                                              .singleWhere(
+                                                  (element) => element == _task)
+                                              .notes[index],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: screen.width,
+                                child: MaterialButton(
+                                  color: blue,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 14, horizontal: 120),
+                                  onPressed: _noteAddDialog,
+                                  child: Text(
+                                    "Adicionar nota",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       )
                     ],
                   ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                width: screen.width * 0.9,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    color: Colors.white),
-                child: Column(
-                  children: [
-                    Container(
-                      width: screen.width,
-                      height: 40,
-                      child: Center(
-                        child: Text("Notas",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17)),
-                      ),
-                      decoration: BoxDecoration(
-                          color: dark,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10))),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              height: _setNoteContainerHeight(),
-                              child: GetBuilder(
-                                init: _userController,
-                                builder: (_) => Scrollbar(
-                                  child: ListView.builder(
-                                    itemCount: _userController
-                                            .user.boards[_boardIndex].tasks
-                                            .singleWhere(
-                                                (element) => element == _task)
-                                            .notes
-                                            ?.length ??
-                                        0,
-                                    itemBuilder: (context, index) {
-                                      return NoteTile(
-                                        task: _task,
-                                        note: _userController
-                                            .user.boards[_boardIndex].tasks
-                                            .singleWhere(
-                                                (element) => element == _task)
-                                            .notes[index],
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: screen.width,
-                              child: MaterialButton(
-                                color: blue,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 14, horizontal: 120),
-                                onPressed: _noteAddDialog,
-                                child: Text(
-                                  "Adicionar nota",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -253,6 +256,7 @@ class _TaskViewState extends State<TaskView> {
         await _userController
             .updateExisting()
             .whenComplete(() => _updateFlushBar());
+        _task.status = _taskController.selectedOption;
       }
     }
   }
