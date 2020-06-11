@@ -20,7 +20,7 @@ class TaskController {
       case 'PROGRESS':
         return purple;
       default:
-        return green;
+        return Colors.green;
     }
   }
 }
