@@ -55,15 +55,20 @@ class _TaskCardState extends State<TaskCard> {
                 return Container(height: 80);
               }
               return ListView.builder(
-                  itemCount:
-                      _userController.user.boards[widget.index].tasks.length,
+                  itemCount: _userController.user.boards[widget.index].tasks
+                      .where((element) => element.status == widget.title)
+                      .length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return TaskTile(
-                      task: _userController
-                          .user.boards[widget.index].tasks[index],
-                      boardIndex: widget.index,
-                    );
+                    if (_userController
+                            .user.boards[widget.index].tasks[index].status ==
+                        widget.title)
+                      return TaskTile(
+                        task: _userController
+                            .user.boards[widget.index].tasks[index],
+                        boardIndex: widget.index,
+                      );
+                    return Container();
                   });
             },
           ),

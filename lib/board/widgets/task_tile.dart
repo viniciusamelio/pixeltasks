@@ -15,7 +15,10 @@ class _TaskTileState extends State<TaskTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.toNamed('/task', arguments: widget.task),
+      onTap: () => Get.toNamed('/task', arguments: {
+        "index" : widget.boardIndex,
+        "task" : widget.task
+      }),
       child: Container(
         margin: const EdgeInsets.all(6),
         width: MediaQuery.of(context).size.width * 0.7,
