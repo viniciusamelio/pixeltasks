@@ -34,8 +34,8 @@ class _LoginViewState extends State<LoginView> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(FontAwesome5.list_alt,
-                                  size: 40, color: Colors.white),
+                              Icon(FontAwesome5Solid.stream,
+                                  size: 45, color: Colors.white),
                               const SizedBox(width: 15),
                               Text("PixelTasks",
                                   style: TextStyle(
