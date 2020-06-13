@@ -1,4 +1,6 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
 import 'package:pixeltasks/shared/models/board.model.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
@@ -6,7 +8,9 @@ import 'package:pixeltasks/shared/styles/colors.dart';
 class BoardDialog extends StatelessWidget {
   final Board board;
   final UserController userController = UserController.to;
-  BoardDialog({Key key, @required this.board}) : super(key: key);
+  final int index;
+  BoardDialog({Key key, @required this.board, @required this.index})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -24,9 +28,14 @@ class BoardDialog extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () async {
-                  final _board = userController.user.boards.where((element) => element == board).single;
+                  final _board = userController.user.boards
+                      .where((element) => element == board)
+                      .single;
                   userController.user.boards.remove(_board);
-                  await userController.updateExisting().then((_) => Navigator.pop(context));
+                  await userController
+                      .updateExisting()
+                      .then((_) => Navigator.pop(context));
+                  _deleteBoard(context);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(12),
@@ -39,7 +48,10 @@ class BoardDialog extends StatelessWidget {
               ),
               const SizedBox(width: 15),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed('/board', arguments: index)
+                      .then((_) => Navigator.of(context).pop());
+                },
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration:
@@ -54,5 +66,14 @@ class BoardDialog extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _deleteBoard(BuildContext context) {
+    Flushbar(
+      backgroundColor: Colors.red,
+      title: "Removido",
+      duration: Duration(seconds: 3),
+      message: "Board removido!",
+    ).show(context);
   }
 }

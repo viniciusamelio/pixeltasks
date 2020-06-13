@@ -45,13 +45,13 @@ class _TaskViewState extends State<TaskView> {
     }
     super.didChangeDependencies();
   }
-  // TODO: Adicionar exclusão de task pela appbar
+
   @override
   Widget build(BuildContext context) {
     final screen = MediaQuery.of(context).size;
     return GetBuilder(
-          init: _userController,
-          builder: (_)=> Scaffold(
+      init: _userController,
+      builder: (_) => Scaffold(
         appBar: AppBar(
           backgroundColor: dark,
           elevation: 3,
@@ -63,7 +63,7 @@ class _TaskViewState extends State<TaskView> {
             Padding(
               padding: const EdgeInsets.only(right: 15.0),
               child: InkWell(
-                onTap: () {},
+                onTap: _deleteTask,
                 child: Icon(Icons.delete, color: Colors.white, size: 30),
               ),
             )
@@ -75,14 +75,20 @@ class _TaskViewState extends State<TaskView> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                    _userController.user.boards[_boardIndex].title +
-                        ' -> ' +
-                        _task.title,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17)),
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                        _userController.user.boards[_boardIndex].title +
+                            ' -> ' +
+                            _task.title,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17)),
+                  ),
+                ),
                 const SizedBox(height: 20),
                 Container(
                   width: screen.width * 0.9,
@@ -100,7 +106,8 @@ class _TaskViewState extends State<TaskView> {
                               .singleWhere((element) => element == _task)
                               .title = e,
                           controller: _titleController,
-                          validator: (e) => emptyValidator(e, "Digite um título"),
+                          validator: (e) =>
+                              emptyValidator(e, "Digite um título"),
                           decoration: InputDecoration(labelText: "Título"),
                         ),
                         const SizedBox(height: 15),
@@ -271,6 +278,25 @@ class _TaskViewState extends State<TaskView> {
 
   void _noteAddDialog() {
     Get.dialog(NoteAddDialog(task: _task, boardIndex: _boardIndex));
+  }
+
+  void _deleteTask() async {
+    Navigator.of(context).popUntil((route) => route.settings.name == '/board');
+    await Future.delayed(Duration(milliseconds: 300))
+        .whenComplete(() => _userController.user.boards[_boardIndex].tasks
+            .removeWhere((element) => element == _task))
+        .then((_) => _userController
+            .updateExisting()
+            .whenComplete(() => _deleteFlushBar));
+  }
+
+  void _deleteFlushBar() {
+    Flushbar(
+      backgroundColor: Colors.red,
+      title: "Removida",
+      duration: Duration(seconds: 3),
+      message: "Task removida!",
+    ).show(context);
   }
 
   double _setNoteContainerHeight() {

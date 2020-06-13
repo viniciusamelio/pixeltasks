@@ -68,7 +68,7 @@ class _HomeViewState extends State<HomeView> {
                     icon: Icon(Icons.menu, color: Colors.white),
                     iconSize: 30,
                     onPressed: () {
-                      Get.dialog(BoardDialog(board: controller.user.boards[index]));
+                      Get.dialog(BoardDialog(board: controller.user.boards[index], index: index,));
                     },
                   ));
             },
