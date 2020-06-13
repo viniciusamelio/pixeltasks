@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:pixeltasks/board/views/finished_tasks.view.dart';
 import 'package:pixeltasks/board/views/progress_tasks.view.dart';
@@ -37,11 +38,39 @@ class _BoardViewState extends State<BoardView> {
         elevation: 2,
         backgroundColor: dark,
         title: Text(_board.title),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: InkWell(
+              onTap: _deleteBoard,
+              child: Icon(Icons.delete, color: Colors.white, size: 30),
+            ),
+          )
+        ],
       ),
       body: PageView(
         scrollDirection: Axis.horizontal,
-        children: [TodoTasksView(index: _index), ProgressTasksView(index: _index),FinishedTasksView(index: _index)],
+        children: [
+          TodoTasksView(index: _index),
+          ProgressTasksView(index: _index),
+          FinishedTasksView(index: _index)
+        ],
       ),
     );
+  }
+
+  void _deleteBoard() async {
+    Navigator.of(context).popUntil((route) => route.settings.name == '/home');
+    await Future.delayed(Duration(milliseconds: 300))
+        .whenComplete(() => _userController.user.boards
+            .removeWhere((element) => element == _board))
+        .whenComplete(
+            () => _userController.updateExisting()
+            .whenComplete(() => Flushbar(
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 3),
+                  title: "Removido",
+                  message: "Board removido!",
+                ).show(context)));
   }
 }
