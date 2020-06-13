@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pixeltasks/home/widgets/board_dialog.dart';
 import 'package:pixeltasks/home/widgets/board_tile.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
+import 'package:pixeltasks/shared/models/user.model.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
 
 class HomeView extends StatefulWidget {
@@ -24,7 +25,16 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: purple,
-        title: Text("Boards"),
+        title: Text("Boards de ${_userController.user.name}"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right:20),
+            child: InkWell(
+              child: Icon(Icons.exit_to_app,size: 30),
+              onTap: _logOut,
+            ),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         elevation: 2,
@@ -76,5 +86,10 @@ class _HomeViewState extends State<HomeView> {
         },
       ),
     );
+  }
+
+  void _logOut(){
+    Get.offNamedUntil('/', ModalRoute.withName('/'));
+    UserController.to.user = User();
   }
 }
