@@ -7,6 +7,7 @@ import 'package:pixeltasks/home/views/home.view.dart';
 import 'package:pixeltasks/login/views/login.view.dart';
 import 'package:pixeltasks/login/views/signup.view.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
+import 'package:pixeltasks/splash/splash.dart';
 import 'package:pixeltasks/task/views/task.view.dart';
 void main() async {
   runApp(MyApp());
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50)),
           )),
       routes: {
-        "/": (context) => LoginView(),
+        "/": (context) => Splash(),
+        "/login" : (context)=> LoginView(),
         "/signup": (context) => SignUpView(),
         '/home': (context) => HomeView(),
         '/board' : (context) => BoardView(),

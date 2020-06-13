@@ -23,7 +23,7 @@ dependencies:
   smart_select: ^3.0.3
   flushbar: ^1.10.4
   intl: ^0.16.1
-
+  splashscreen: ^1.2.0
 dev_dependencies:
   flutter_launcher_icons: "^0.7.3"
   build_runner: ^1.10.0

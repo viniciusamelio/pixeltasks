@@ -89,7 +89,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void _logOut(){
-    Get.offNamedUntil('/', ModalRoute.withName('/'));
+    Get.offNamedUntil('/login', ModalRoute.withName('/login'));
     UserController.to.user = User();
   }
 }
