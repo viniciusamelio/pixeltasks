@@ -217,7 +217,7 @@ class _TaskViewState extends State<TaskView> {
                                 child: MaterialButton(
                                   color: blue,
                                   padding: EdgeInsets.symmetric(
-                                      vertical: 14, horizontal: 120),
+                                      vertical: 14, horizontal: 50),
                                   onPressed: _noteAddDialog,
                                   child: Text(
                                     "Adicionar nota",
