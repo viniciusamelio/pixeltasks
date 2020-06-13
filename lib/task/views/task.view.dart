@@ -141,7 +141,7 @@ class _TaskViewState extends State<TaskView> {
                           child: MaterialButton(
                             color: purple,
                             padding: EdgeInsets.symmetric(
-                                vertical: 14, horizontal: 120),
+                                vertical: 14, horizontal: 50),
                             onPressed: _validateForm,
                             child: Text(
                               "Alterar",
