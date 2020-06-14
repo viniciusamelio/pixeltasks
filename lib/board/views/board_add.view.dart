@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pixeltasks/board/controllers/board.controller.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
-import 'package:pixeltasks/shared/models/board.model.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
+import 'package:pixeltasks/shared/utils/validators.dart';
 import 'package:pixeltasks/shared/widgets/color_picker.dart';
 
 class BoardAddView extends StatefulWidget {
@@ -49,9 +49,9 @@ class _BoardAddViewState extends State<BoardAddView> {
                   const SizedBox(height: 20),
                   TextFormField(
                     onSaved: (e) => _boardController.board.title = e,
-                    validator: (e) {
-                      if (e.isEmpty) return "Insira o título do Board";
-                    },
+                    validator: (e) =>
+                      emptyValidator(e, "Insira o título do Board")
+                    ,
                     decoration: InputDecoration(labelText: "Título"),
                   ),
                   const SizedBox(height: 5),

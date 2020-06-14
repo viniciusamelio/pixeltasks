@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:pixeltasks/board/widgets/task_add_alert.dart';
 import 'package:pixeltasks/board/widgets/task_tile.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
-import 'package:pixeltasks/shared/models/task.model.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
 
 class TaskCard extends StatefulWidget {

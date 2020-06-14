@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:pixeltasks/shared/models/task.model.dart';
 
 class Board {

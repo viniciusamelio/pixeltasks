@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
 import 'package:pixeltasks/shared/models/note.model.dart';
@@ -14,7 +12,7 @@ class NoteAddDialog extends StatefulWidget {
   const NoteAddDialog(
       {Key key,
       @required this.task,
-      @HttpStatus.UPGRADE_REQUIRED this.boardIndex})
+      @required this.boardIndex})
       : super(key: key);
   @override
   _NoteAddDialogState createState() => _NoteAddDialogState();
