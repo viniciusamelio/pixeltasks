@@ -1,16 +1,11 @@
-# pixeltasks
+# PixelTasks
 
-A new Flutter project.
+Trata-se de um app para gestão de projetos, que se utiliza do conceito de Boards (Quadros), referentes a cada projeto, podendo gerenciar as atividades através de status. Este em questão, é um conceito muito utilizado em padrões de gestão de projetos, tais como Scrum, Kanban, etc.
 
-## Getting Started
+## Tecnologias
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+O app foi desenvolvido utilizando o framework Flutter, que por sua vez é escrito na linguagem DART.
+Dentre os recursos in-app podemos dar destaque para:
+- Gerenciamento de estado utilizando o pacote GET;
+- Database interno HIVE;
+- Estruturação modular.
