@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pixeltasks/board/controllers/board.controller.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
 import 'package:pixeltasks/shared/models/board.model.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
@@ -12,23 +13,17 @@ class BoardAddView extends StatefulWidget {
 
 class _BoardAddViewState extends State<BoardAddView> {
   GlobalKey<FormState> _key;
-  Board _board;
+  BoardController _boardController;
   UserController _userController;
   @override
   void initState() {
     _key = GlobalKey<FormState>();
     _userController = UserController.to;
+    _boardController = BoardController(_userController);
     _boardHandler();
-    _board = Board();
     super.initState();
   }
-
-  void _boardHandler() {
-    if (_userController.user.boards == null) {
-      _userController.user.boards = [];
-    }
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     final screen = MediaQuery.of(context).size;
@@ -53,7 +48,7 @@ class _BoardAddViewState extends State<BoardAddView> {
                 children: [
                   const SizedBox(height: 20),
                   TextFormField(
-                    onSaved: (e) => _board.title = e,
+                    onSaved: (e) => _boardController.board.title = e,
                     validator: (e) {
                       if (e.isEmpty) return "Insira o título do Board";
                     },
@@ -63,7 +58,7 @@ class _BoardAddViewState extends State<BoardAddView> {
                   Text("Cor", style: TextStyle(fontSize: 20, color: dark)),
                   const SizedBox(height: 10),
                   ColorPicker(onSelect: (Color color) {
-                    _board.color = color.toString();
+                    _boardController.board.color = color.toString();
                   }),
                   const SizedBox(height: 20),
                   SizedBox(
@@ -91,7 +86,7 @@ class _BoardAddViewState extends State<BoardAddView> {
 
   void _validate() async {
     if (_key.currentState.validate()) {
-      if (_board.color == null) {
+      if (_boardController.board.color == null) {
         Get.defaultDialog(
             title: "Validação",
             middleText: "Selecione a cor para o Board",
@@ -100,12 +95,14 @@ class _BoardAddViewState extends State<BoardAddView> {
             onConfirm: () => Navigator.of(context).pop());
       } else {
         _key.currentState.save();
-        _board.createdAt = DateTime.now();
-        _userController.user.boards.add(_board);
-        await _userController.updateExisting();
-        await _userController.save().whenComplete(
+        await _boardController.add().whenComplete(
             () => Get.offNamedUntil('/home', (Route<dynamic> route) => false));
       }
+    }
+  }
+  void _boardHandler() {
+    if (_userController.user.boards == null) {
+      _userController.user.boards = [];
     }
   }
 }
