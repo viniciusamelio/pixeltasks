@@ -5,6 +5,7 @@ class User {
   String name;
   String password;
   List<Board> boards = <Board>[];
+  bool firstLaunch;
 
   User({this.id, this.name, this.password, this.boards});
 
@@ -13,6 +14,7 @@ class User {
       id = json['id'];
       name = json['name'];
       password = json['password'];
+      firstLaunch = json['first_launch'] ?? true;
       if (json['boards'] != null) {
         for (var board in json['boards']) {
           boards.add(Board.fromJson(board));
@@ -26,6 +28,7 @@ class User {
     json['id'] = id;
     json['name'] = name;
     json['password'] = password;
+    json['first_launch'] = firstLaunch ?? true;
     if (boards != null) {
       List<Map<dynamic, dynamic>> boardsJson = <Map<dynamic, dynamic>>[];
       for (var board in boards) {
