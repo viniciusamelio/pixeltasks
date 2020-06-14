@@ -2,13 +2,10 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pixeltasks/shared/controllers/user.controller.dart';
-import 'package:pixeltasks/shared/models/note.model.dart';
-import 'package:pixeltasks/shared/models/task.model.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
 import 'package:pixeltasks/shared/utils/validators.dart';
 import 'package:pixeltasks/task/controllers/task.controller.dart';
-import 'package:pixeltasks/task/widgets/note_add_dialog.dart';
-import 'package:pixeltasks/task/widgets/note_tile.dart';
+import 'package:pixeltasks/task/widgets/note_card.dart';
 import 'package:smart_select/smart_select.dart';
 
 class TaskView extends StatefulWidget {
@@ -17,30 +14,24 @@ class TaskView extends StatefulWidget {
 }
 
 class _TaskViewState extends State<TaskView> {
-  Task _task;
   TaskController _taskController;
   UserController _userController;
   GlobalKey<FormState> _key;
-  int _boardIndex;
-  int _taskIndex;
   TextEditingController _titleController;
   TextEditingController _descriptionController;
   @override
   void initState() {
     _key = GlobalKey<FormState>();
-    _userController = UserController.to;
-    _taskController = TaskController();
-    _titleController = TextEditingController();
-    _descriptionController = TextEditingController();
+    _initControllers();
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
     final arguments = ModalRoute.of(context).settings.arguments as Map;
-    if (_task == null) {
-      _task = arguments['task'];
-      _boardIndex = arguments['index'];
+    if (_taskController.task == null) {
+      _taskController.task = arguments['task'];
+      _taskController.boardIndex = arguments['index'];
       _setTask();
     }
     super.didChangeDependencies();
@@ -57,7 +48,7 @@ class _TaskViewState extends State<TaskView> {
           elevation: 3,
           title: GetBuilder(
             init: _userController,
-            builder: (_) => Text(_task.title),
+            builder: (_) => Text(_taskController.task.title),
           ),
           actions: [
             Padding(
@@ -69,7 +60,7 @@ class _TaskViewState extends State<TaskView> {
             )
           ],
         ),
-        backgroundColor: _taskController.setColor(_task.status),
+        backgroundColor: _taskController.setColor(_taskController.task.status),
         body: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -80,9 +71,10 @@ class _TaskViewState extends State<TaskView> {
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
-                        _userController.user.boards[_boardIndex].title +
+                        _userController
+                                .user.boards[_taskController.boardIndex].title +
                             ' -> ' +
-                            _task.title,
+                            _taskController.task.title,
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -101,10 +93,7 @@ class _TaskViewState extends State<TaskView> {
                     child: Column(
                       children: [
                         TextFormField(
-                          onSaved: (e) => _userController
-                              .user.boards[_boardIndex].tasks
-                              .singleWhere((element) => element == _task)
-                              .title = e,
+                          onSaved: (e) => _taskController.currentTask.title = e,
                           controller: _titleController,
                           validator: (e) =>
                               emptyValidator(e, "Digite um título"),
@@ -112,14 +101,13 @@ class _TaskViewState extends State<TaskView> {
                         ),
                         const SizedBox(height: 15),
                         TextFormField(
-                          onSaved: (e) => _userController
-                              .user.boards[_boardIndex].tasks
-                              .singleWhere((element) => element == _task)
-                              .description = e,
+                          onSaved: (e) =>
+                              _taskController.currentTask.description = e,
                           controller: _descriptionController,
                           validator: (e) =>
-                              emptyValidator(e, "Digite uma desccrição"),
-                          decoration: InputDecoration(labelText: "Descrição"),
+                              emptyValidator(e, "Digite uma descrição"),
+                          decoration:
+                              const InputDecoration(labelText: "Descrição"),
                         ),
                         const SizedBox(height: 15),
                         GetBuilder(
@@ -156,84 +144,9 @@ class _TaskViewState extends State<TaskView> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Container(
-                  width: screen.width * 0.9,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: screen.width,
-                        height: 40,
-                        child: Center(
-                          child: Text("Notas",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17)),
-                        ),
-                        decoration: BoxDecoration(
-                            color: dark,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10))),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                height: _setNoteContainerHeight(),
-                                child: GetBuilder(
-                                  init: _userController,
-                                  builder: (_) => Scrollbar(
-                                    child: ListView.builder(
-                                      itemCount: _userController
-                                              .user.boards[_boardIndex].tasks
-                                              .singleWhere(
-                                                  (element) => element == _task)
-                                              .notes
-                                              ?.length ??
-                                          0,
-                                      itemBuilder: (context, index) {
-                                        return NoteTile(
-                                          task: _task,
-                                          note: _userController
-                                              .user.boards[_boardIndex].tasks
-                                              .singleWhere(
-                                                  (element) => element == _task)
-                                              .notes[index],
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: screen.width,
-                                child: MaterialButton(
-                                  color: blue,
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 14, horizontal: 50),
-                                  onPressed: _noteAddDialog,
-                                  child: Text(
-                                    "Adicionar nota",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                )
+                NoteCard(
+                    taskController: _taskController,
+                    userController: _userController)
               ],
             ),
           ),
@@ -243,9 +156,9 @@ class _TaskViewState extends State<TaskView> {
   }
 
   void _setTask() {
-    _titleController.text = _task.title;
-    _descriptionController.text = _task.description;
-    _taskController.selectedOption = _task.status.toUpperCase();
+    _titleController.text = _taskController.task.title;
+    _descriptionController.text = _taskController.task.description;
+    _taskController.selectedOption = _taskController.task.status.toUpperCase();
   }
 
   void _validateForm() async {
@@ -256,14 +169,9 @@ class _TaskViewState extends State<TaskView> {
           message: "Selecione o status",
         ).show(context);
       } else {
-        _userController.user.boards[_boardIndex].tasks
-            .singleWhere((element) => element == _task)
-            .status = _taskController.selectedOption;
         _key.currentState.save();
-        await _userController
-            .updateExisting()
-            .whenComplete(() => _updateFlushBar());
-        _task.status = _taskController.selectedOption;
+        await _taskController.update().whenComplete(() => _updateFlushBar());
+        _taskController.task.status = _taskController.selectedOption;
       }
     }
   }
@@ -276,18 +184,9 @@ class _TaskViewState extends State<TaskView> {
     ).show(context);
   }
 
-  void _noteAddDialog() {
-    Get.dialog(NoteAddDialog(task: _task, boardIndex: _boardIndex));
-  }
-
   void _deleteTask() async {
     Navigator.of(context).popUntil((route) => route.settings.name == '/board');
-    await Future.delayed(Duration(milliseconds: 300))
-        .whenComplete(() => _userController.user.boards[_boardIndex].tasks
-            .removeWhere((element) => element == _task))
-        .then((_) => _userController
-            .updateExisting()
-            .whenComplete(() => _deleteFlushBar));
+    await _taskController.delete().whenComplete(() => _deleteFlushBar());
   }
 
   void _deleteFlushBar() {
@@ -299,14 +198,10 @@ class _TaskViewState extends State<TaskView> {
     ).show(context);
   }
 
-  double _setNoteContainerHeight() {
-    double length = _userController.user.boards[_boardIndex].tasks
-            .singleWhere((element) => element == _task)
-            .notes
-            ?.length
-            ?.toDouble() ??
-        0;
-    if (length > 2) return 180;
-    return length * 90;
+  void _initControllers() {
+    _userController = UserController.to;
+    _taskController = TaskController(_userController);
+    _titleController = TextEditingController();
+    _descriptionController = TextEditingController();
   }
 }
