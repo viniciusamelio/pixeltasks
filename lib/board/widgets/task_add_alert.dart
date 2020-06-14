@@ -3,6 +3,7 @@ import 'package:pixeltasks/shared/controllers/user.controller.dart';
 import 'package:pixeltasks/shared/models/task.model.dart';
 import 'package:pixeltasks/shared/styles/colors.dart';
 import 'package:pixeltasks/shared/utils/validators.dart';
+import 'package:pixeltasks/task/controllers/task.controller.dart';
 
 class TaskAddAlert extends StatefulWidget {
   final int index;
@@ -15,10 +16,14 @@ class TaskAddAlert extends StatefulWidget {
 class _TaskAddAlertState extends State<TaskAddAlert> {
   GlobalKey<FormState> _key = GlobalKey<FormState>();
   UserController _userController;
-  Task _task = Task();
+  TaskController _taskController;
   @override
   void initState() {
     _userController = UserController.to;
+    _taskController = TaskController(_userController);
+    _taskController.task = Task();
+    _taskController.boardIndex = widget.index;
+    _taskHandler();
     super.initState();
   }
 
@@ -38,13 +43,13 @@ class _TaskAddAlertState extends State<TaskAddAlert> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
-              onSaved: (e) => _task.title = e,
+              onSaved: (e) => _taskController.task.title = e,
               validator: (e) => emptyValidator(e, "Insira um título"),
               decoration: InputDecoration(labelText: "Título"),
             ),
             const SizedBox(height: 5),
             TextFormField(
-              onSaved: (e) => _task.description = e,
+              onSaved: (e) => _taskController.task.description = e,
               validator: (e) => emptyValidator(e, "Insira uma descrição"),
               decoration: InputDecoration(labelText: "Descrição"),
             ),
@@ -72,15 +77,17 @@ class _TaskAddAlertState extends State<TaskAddAlert> {
   void _addTask() async {
     if (_key.currentState.validate()) {
       _key.currentState.save();
-      _task.status = widget.status;
-      if (_userController.user.boards[widget.index].tasks == null)
-        _userController.user.boards[widget.index].tasks = <Task>[];
-      _userController.user.boards[widget.index].tasks.add(_task);
-      await _userController.save().whenComplete(() => _callback());
+      _taskController.task.status = widget.status;
+      await _taskController.add().whenComplete(() => _callback());
     }
   }
 
   void _callback() {
     Navigator.pop(context);
+  }
+
+  void _taskHandler() {
+    if (_userController.user.boards[widget.index].tasks == null)
+      _userController.user.boards[widget.index].tasks = <Task>[];
   }
 }

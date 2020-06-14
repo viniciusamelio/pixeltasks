@@ -35,6 +35,11 @@ class TaskController {
         .then((_) => _userController.updateExisting());
   }
 
+  Future<void> add() async{
+    _userController.user.boards[boardIndex].tasks.add(task);
+    await _userController.save();
+  }
+
   Color setColor(String status) {
     switch (status.toUpperCase()) {
       case 'TODO':
