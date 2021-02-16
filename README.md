@@ -9,3 +9,8 @@ Dentre os recursos in-app podemos dar destaque para:
 - Gerenciamento de estado utilizando o pacote GET;
 - Database interno HIVE;
 - Estruturação modular.
+
+### Melhorias pendentes
+- Interfacear as classes;
+- Ajustar dependências orientadas a Interfaces;
+- Adicionar tutorial no primeiro uso.
