@@ -8,15 +8,13 @@ class Splash extends StatelessWidget {
   Widget build(BuildContext context) {
     return SplashScreen(
         seconds: 5,
-        gradientBackground:
-            LinearGradient(colors: [purple,purple]),
         navigateAfterSeconds: new LoginView(),
         title: Text("PixelTasks",
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 40,
                 fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.white,
+        backgroundColor: purple,
         loaderColor: dark);
   }
 }

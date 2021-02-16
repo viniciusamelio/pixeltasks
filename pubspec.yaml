@@ -19,7 +19,7 @@ dependencies:
   path_provider: ^1.6.8
   flutter_icons: ^1.1.0
   flutter_bcrypt: ^1.0.5
-  get: ^2.5.10
+  get: 2.5.10
   smart_select: ^3.0.3
   flushbar: ^1.10.4
   intl: ^0.16.1
